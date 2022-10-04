@@ -26,6 +26,14 @@ export class UsersRepository implements IGenericRepository<UserEntity> {
     });
   }
 
+  async findOneByEmail(
+    email: Prisma.UserWhereUniqueInput,
+  ): Promise<UserEntity> {
+    return await this.prismaService.user.findUnique({
+      where: email,
+    });
+  }
+
   async update(id: number, updateUserDto: UpdateUserDto): Promise<UserEntity> {
     return await this.prismaService.user.update({
       data: updateUserDto,
