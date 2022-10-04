@@ -3,6 +3,7 @@
 /node_modules
 /.docker
 docker-compose.yml
+.env
 
 # Logs
 logs
