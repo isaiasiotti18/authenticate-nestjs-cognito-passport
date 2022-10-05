@@ -20,18 +20,20 @@ export class AuthService {
       if (userExists) throw new BadRequestException('User already exists!');
 
       const createUser = await this.usersService.create(createUserDto);
-      const registerUserAws = await this.awsService.register(createUserDto);
 
-      return {
-        createUser,
-        registerUserAws,
-      };
+      await this.awsService.register({
+        email: createUser.email,
+        name: createUser.name,
+        hash_password: createUser.hash_password,
+      });
+
+      return createUser;
     } catch (error: any) {
       throw new BadRequestException(error?.message);
     }
   }
 
-  authenticateUser(authRequest: AuthRequestDto) {
+  async authenticateUser(authRequest: AuthRequestDto) {
     return;
   }
 }

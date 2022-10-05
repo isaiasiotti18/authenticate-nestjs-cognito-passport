@@ -21,7 +21,7 @@ export class UsersService {
 
     return {
       ...createdUser,
-      password: undefined,
+      hash_password: undefined,
     };
   }
 
