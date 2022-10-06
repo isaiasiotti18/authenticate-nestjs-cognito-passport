@@ -1,53 +1,38 @@
-import { UserEntity } from './entities/user.entity';
+import { User } from './entities/user.entity';
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { PrismaService } from '../../shared/prisma/prisma.service';
 import { IGenericRepository } from '../../shared/base/interfaces/base-repository.interface';
 
 @Injectable()
-export class UsersRepository implements IGenericRepository<UserEntity> {
-  constructor(private readonly prismaService: PrismaService) {}
-
-  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
-    return await this.prismaService.user.create({
-      data: createUserDto,
-    });
+export class UsersRepository implements IGenericRepository<User> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    return;
   }
 
-  async findAll(): Promise<UserEntity[]> {
-    return await this.prismaService.user.findMany();
+  async findAll(): Promise<User[]> {
+    return [];
   }
 
-  async findOne(id: Prisma.UserWhereUniqueInput): Promise<UserEntity> {
-    return await this.prismaService.user.findUnique({
-      where: id,
-    });
+  async findByEmail(email: string): Promise<User> {
+    return;
+    // return await this.prismaService.$queryRaw(
+    //   Prisma.sql`SELECT email FROM user WHERE email = ${email}`,
+    // );
   }
 
-  async findOneByEmail(
-    email: Prisma.UserWhereUniqueInput,
-  ): Promise<UserEntity> {
-    return await this.prismaService.user.findUnique({
-      where: email,
-    });
+  async findOne(id: number): Promise<User> {
+    // return await this.prismaService.$queryRaw(
+    //   Prisma.sql`SELECT id FROM user WHERE id = ${id}`,
+    // );
+    return;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<UserEntity> {
-    return await this.prismaService.user.update({
-      data: updateUserDto,
-      where: {
-        id,
-      },
-    });
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    return;
   }
 
-  remove(id: number): Promise<UserEntity> {
-    return this.prismaService.user.delete({
-      where: {
-        id,
-      },
-    });
+  remove(id: number): Promise<User> {
+    return;
   }
 }

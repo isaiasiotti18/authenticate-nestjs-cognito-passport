@@ -1,11 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserEntity } from './entities/user.entity';
+import { User } from './entities/user.entity';
 import { UsersRepository } from './users.repository';
-
 import * as bcrypt from 'bcryptjs';
-import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -25,7 +23,7 @@ export class UsersService {
     };
   }
 
-  async findAll(): Promise<UserEntity[]> {
+  async findAll(): Promise<User[]> {
     const users = await this.usersRepository.findAll();
     return users.map((user) => {
       return {
@@ -37,12 +35,12 @@ export class UsersService {
     });
   }
 
-  async findOne(id: Prisma.UserWhereUniqueInput) {
+  async findOne(id: number) {
     return await this.usersRepository.findOne(id);
   }
 
-  async findOneByEmail(email: Prisma.UserWhereUniqueInput) {
-    return await this.usersRepository.findOneByEmail(email);
+  async findByEmail(email: string): Promise<User> {
+    return await this.usersRepository.findByEmail(email);
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

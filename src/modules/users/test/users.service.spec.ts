@@ -1,7 +1,6 @@
 import { CreateUserDto } from './../dto/create-user.dto';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from '../users.service';
-import { Prisma } from '@prisma/client';
 
 class ApiServiceMock {
   create(dto: any) {
@@ -46,8 +45,8 @@ describe.only('UsersService', () => {
 
   it('should call findOne method with expected param', async () => {
     const findOne = jest.spyOn(service, 'findOne');
-    const findOneOptions: Prisma.UserWhereUniqueInput = {};
-    service.findOne({});
+    const findOneOptions = {};
+    service.findOne(55);
     expect(findOne).toHaveBeenCalledWith(findOneOptions);
   });
 });

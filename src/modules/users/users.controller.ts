@@ -10,6 +10,7 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
 
 @Controller('users')
 export class UsersController {
@@ -26,8 +27,13 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.usersService.findOne({ id });
+  async findOne(@Param('id') id: number) {
+    return await this.usersService.findOne(id);
+  }
+
+  @Get(':email')
+  async findOneByEmail(@Param('email') email: string): Promise<User> {
+    return await this.usersService.findByEmail(email);
   }
 
   @Patch(':id')
