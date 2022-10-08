@@ -26,13 +26,13 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get(':id')
+  @Get('/:id/user')
   async findOne(@Param('id') id: number) {
     return await this.usersService.findOne(id);
   }
 
-  @Get(':email')
-  async findOneByEmail(@Param('email') email: string): Promise<User> {
+  @Get('/:email/user')
+  async findByEmail(@Param('email') email: string): Promise<User> {
     return await this.usersService.findByEmail(email);
   }
 
