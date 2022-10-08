@@ -23,7 +23,7 @@
     "typeorm:migrationGenerate": "npm run typeorm -- -d ./src/shared/database/typeorm/datasource.ts migration:generate ./src/shared/database/migrations/$npm_config_name",
     "typeorm:migrationCreate": "npm run typeorm -- migration:create ./src/shared/database/migrations/$npm_config_name",
     "typeorm:migrationRun": "npm run typeorm migration:run -- -d ./src/shared/database/typeorm/datasource.ts",
-    "typeorm:migrationRevert": "npm run typeorm -- -d /src/shared/database/typeorm/datasource.ts migration:revert"
+    "typeorm:migrationRevert": "npm run typeorm -- -d ./src/shared/database/typeorm/datasource.ts migration:revert"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
