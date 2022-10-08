@@ -44,7 +44,9 @@ export class UsersRepository implements IGenericRepository<User> {
     return;
   }
 
-  remove(id: number): Promise<User> {
-    return;
+  async delete(id: number): Promise<void> {
+    await this.usersRepository.delete({
+      id,
+    });
   }
 }
