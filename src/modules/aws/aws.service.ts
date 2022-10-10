@@ -21,12 +21,12 @@ export class AwsService {
   }
 
   async register(createUserDto: CreateUserDto) {
-    const { name, email, hash_password } = createUserDto;
+    const { email, hash_password } = createUserDto;
     const password = hash_password;
 
     return new Promise((resolve, reject) => {
       return this.userPool.signUp(
-        name,
+        email,
         password,
         [new CognitoUserAttribute({ Name: 'email', Value: email })],
         null,
@@ -42,15 +42,15 @@ export class AwsService {
   }
 
   authenticateUserAwsCognito(authenticateRequest: AuthRequestDto) {
-    const { name, password } = authenticateRequest;
+    const { username, password } = authenticateRequest;
 
     const authenticationDetails = new AuthenticationDetails({
-      Username: name,
+      Username: username,
       Password: password,
     });
 
     const userData = {
-      Username: name,
+      Username: username,
       Pool: this.userPool,
     };
 

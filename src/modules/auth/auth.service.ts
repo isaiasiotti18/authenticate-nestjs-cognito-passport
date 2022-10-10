@@ -23,15 +23,13 @@ export class AuthService {
       const createUser = await this.usersService.create(createUserDto);
 
       if (createUser) {
-        this.awsService
+        await this.awsService
           .register({
             email: createUser.email,
             name: createUser.name,
             hash_password: await bcrypt.hash(createUserDto.hash_password, 10),
           })
-          .then(() => {
-            return createUser;
-          })
+          .then(() => createUser)
           .catch(async (e) => {
             await this.usersService.delete(createUser.id);
             throw new BadRequestException(e.message);
@@ -43,6 +41,19 @@ export class AuthService {
   }
 
   async authenticateUser(authRequest: AuthRequestDto) {
-    return;
+    try {
+      const { username, password } = authRequest;
+
+      const userExists = await this.usersService.findByEmail(username);
+
+      if (userExists) {
+        return await this.awsService.authenticateUserAwsCognito({
+          username,
+          password,
+        });
+      }
+    } catch (error: any) {
+      throw new BadRequestException(error.message);
+    }
   }
 }
