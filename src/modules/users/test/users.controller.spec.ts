@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreateUserDto } from '../dto/create-user.dto';
 import { UsersController } from '../users.controller';
 import { UsersService } from '../users.service';
 
@@ -12,9 +11,9 @@ describe('UsersController', () => {
     const ApiServiceProvider = {
       provide: UsersService,
       useFactory: () => ({
-        create: jest.fn(() => []),
         findAll: jest.fn(() => []),
         findOne: jest.fn(() => {}),
+        findByEmail: jest.fn(() => {}),
       }),
     };
     const app: TestingModule = await Test.createTestingModule({
@@ -30,18 +29,6 @@ describe('UsersController', () => {
     expect(usersController).toBeDefined();
   });
 
-  it('calling create method', () => {
-    const dto = new CreateUserDto();
-    expect(usersController.create(dto)).not.toEqual(null);
-  });
-
-  it('calling create method', () => {
-    const dto = new CreateUserDto();
-    usersController.create(dto);
-    expect(spyService.create).toHaveBeenCalled();
-    expect(spyService.create).toHaveBeenCalledWith(dto);
-  });
-
   it('calling findAll method', () => {
     usersController.findAll();
     expect(spyService.findAll).toHaveBeenCalled();
@@ -50,5 +37,10 @@ describe('UsersController', () => {
   it('calling find FindOne method', () => {
     usersController.findOne(5879);
     expect(spyService.findOne).toHaveBeenCalled();
+  });
+
+  it('calling find FindByEmail method', () => {
+    usersController.findByEmail('isaiasiotti@gmail.com');
+    expect(spyService.findByEmail).toHaveBeenCalled();
   });
 });
