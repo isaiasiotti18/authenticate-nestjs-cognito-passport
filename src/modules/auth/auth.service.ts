@@ -1,15 +1,20 @@
+import { LoginRequestBody } from './interfaces/login-request-body';
 import { UsersService } from './../users/users.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from '../users/dto/create-user.dto';
-import { AuthRequestDto } from './dtos/auth-request.dto';
 import { AwsService } from '../aws/aws.service';
 import * as bcrypt from 'bcryptjs';
+import { User } from '../users/entities/user.entity';
+import { JwtService } from '@nestjs/jwt';
+import { UserToken } from './interfaces/user-token';
+import { UserPayload } from './interfaces/user-payload';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly awsService: AwsService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async register(createUserDto: CreateUserDto) {
@@ -40,15 +45,29 @@ export class AuthService {
     }
   }
 
-  async authenticateUser(authRequest: AuthRequestDto) {
-    try {
-      const { username, password } = authRequest;
+  login(user: User): UserToken {
+    const payload: UserPayload = {
+      sub: user.id,
+      email: user.email,
+      name: user.name,
+    };
 
-      const userExists = await this.usersService.findByEmail(username);
+    const jwtToken = this.jwtService.sign(payload);
+
+    return {
+      access_token: jwtToken,
+    };
+  }
+
+  async validateUser(loginRequestBody: LoginRequestBody) {
+    try {
+      const { email, password } = loginRequestBody;
+
+      const userExists = await this.usersService.findByEmail(email);
 
       if (userExists) {
         return await this.awsService.authenticateUserAwsCognito({
-          username,
+          email,
           password,
         });
       }

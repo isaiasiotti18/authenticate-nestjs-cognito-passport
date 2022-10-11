@@ -1,3 +1,4 @@
+import { LoginRequestBody } from './../auth/interfaces/login-request-body';
 import { CreateUserDto } from './../users/dto/create-user.dto';
 import { AwsConfig } from './aws.config';
 import { Injectable } from '@nestjs/common';
@@ -7,7 +8,6 @@ import {
   CognitoUserAttribute,
   CognitoUserPool,
 } from 'amazon-cognito-identity-js';
-import { AuthRequestDto } from '../auth/dtos/auth-request.dto';
 
 @Injectable()
 export class AwsService {
@@ -41,16 +41,16 @@ export class AwsService {
     });
   }
 
-  authenticateUserAwsCognito(authenticateRequest: AuthRequestDto) {
-    const { username, password } = authenticateRequest;
+  authenticateUserAwsCognito(authenticateRequest: LoginRequestBody) {
+    const { email, password } = authenticateRequest;
 
     const authenticationDetails = new AuthenticationDetails({
-      Username: username,
+      Username: email,
       Password: password,
     });
 
     const userData = {
-      Username: username,
+      Username: email,
       Pool: this.userPool,
     };
 
